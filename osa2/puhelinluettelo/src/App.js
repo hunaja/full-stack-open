@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import personService from './services/persons'
 
+const boxVisibleTime = 2500
+
 const handleChange = (setter) => (event) => setter(event.target.value)
 
 const Filter = ({ filter, setFilter }) => (
@@ -34,13 +36,13 @@ const PersonForm = ({ persons, setPersons, setMessage }) => {
           success: true,
           text: `Changed the number of ${newName}`
         })
-        setTimeout(() => setMessage(null), 2500)
+        setTimeout(() => setMessage(null), boxVisibleTime)
       }).catch(() => {
         setMessage({
           success: false,
           text: `Information of ${newName} has already been removed from the server`
         })
-        setTimeout(() => setMessage(null), 2500)
+        setTimeout(() => setMessage(null), boxVisibleTime)
       })
     } else {
       const newPerson = { name: newName, number: newNumber }
@@ -52,7 +54,7 @@ const PersonForm = ({ persons, setPersons, setMessage }) => {
           success: true,
           text: `Added ${newName}`
         })
-        setTimeout(() => setMessage(null), 2500)
+        setTimeout(() => setMessage(null), boxVisibleTime)
       })
     }
 
@@ -90,7 +92,7 @@ const Persons = ({ persons, setPersons, filter, setMessage }) => {
         success: true,
         text: `Deleted ${person.name}`
       })
-      setTimeout(() => setMessage(null), 2500)
+      setTimeout(() => setMessage(null), boxVisibleTime)
     })
   }
 
