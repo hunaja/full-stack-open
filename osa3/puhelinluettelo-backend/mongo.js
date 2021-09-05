@@ -5,7 +5,7 @@ const Person = require('./models/person.js')
 
 const [,,password, name, number] = process.argv
 
-const mongoUrl = `MONGO_URL=mongodb+srv://root:${password}@cluster0.eblp5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+const mongoUrl = `mongodb+srv://root:${password}@cluster0.eblp5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
 
 mongoose.connect(mongoUrl).then(() => {
   if (!name || !number) {
