@@ -36,6 +36,8 @@ const App = () => {
   
   const setRandomSelected = () => setSelected(randomIndex(anecdotes))
 
+  console.log(inxedOfMax(anecdotes))
+
   return (
     <div>
       <h1>Anecdote of the day</h1>
@@ -56,7 +58,7 @@ const App = () => {
       <Anecdote
         anecdotes={anecdotes} 
         points={points} 
-        index={inxedOfMax(anecdotes)} />
+        index={inxedOfMax(points)} />
     </div>
   )
 }
