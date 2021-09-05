@@ -57,8 +57,6 @@ app.put('/api/persons/:id', (req, res, next) => {
         || typeof body.id == 'undefined') 
     return res.sendStatus(400)
 
-    console.log(body.number)
-
   // apparently the shema validation is not present in findByIdAndUpdate
   if (body.number.length <= 8) 
     return res.status(400).json({ error: 'Number has to be at least 8 chars long.' })
