@@ -1,0 +1,18 @@
+.box {
+  font-size: 15px;
+  border: 5px solid;
+  background: lightgray;
+  border-radius: 3px;
+  padding: 15px;
+  margin-bottom: 5px;
+}
+
+.box.green {
+  border-color: green;
+  color: green;
+}
+
+.box.red {
+  border-color: red;
+  color: red;
+}
