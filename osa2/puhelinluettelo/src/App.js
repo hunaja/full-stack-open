@@ -29,18 +29,22 @@ const PersonForm = ({ persons, setPersons, setMessage }) => {
 
       const changedPerson = { ...match, number: newNumber}
       
-      personService.update(changedPerson).then((response) => {
-        setPersons(persons.map((p) => (p.id !== match.id ) ? p : response.data))
+      personService.update(changedPerson).then(() => {
+        setPersons(persons.map((p) => (p.id !== match.id ) ? p : changedPerson))
 
         setMessage({
           success: true,
           text: `Changed the number of ${newName}`
         })
         setTimeout(() => setMessage(null), boxVisibleTime)
-      }).catch(() => {
+
+        setNewName('')
+        setNewNumber('')
+      }).catch((e) => {
+        console.log("Viesti. " + e.message)
         setMessage({
           success: false,
-          text: `Information of ${newName} has already been removed from the server`
+          text: e.response.data.error
         })
         setTimeout(() => setMessage(null), boxVisibleTime)
       })
@@ -55,11 +59,17 @@ const PersonForm = ({ persons, setPersons, setMessage }) => {
           text: `Added ${newName}`
         })
         setTimeout(() => setMessage(null), boxVisibleTime)
+
+        setNewName('')
+        setNewNumber('')
+      }).catch((e) => {
+        setMessage({
+          success: false,
+          text: e.response.data.error
+        })
+        setTimeout(() => setMessage(null), boxVisibleTime)
       })
     }
-
-    setNewName('')
-    setNewNumber('')
   }
 
   return (
