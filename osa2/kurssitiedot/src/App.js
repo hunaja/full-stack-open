@@ -1,5 +1,3 @@
-/** This program does not use loops as it is not required by the assignment. */
-
 import Course from './components/Course'
 
 const App = () => {
