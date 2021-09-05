@@ -1,3 +1,5 @@
+/** This program does not use loops as it is not required by the assignment. */
+
 const Header = ({ course: { name } }) => (
   <h1>{name}</h1>
 )
@@ -18,8 +20,7 @@ const Content = ({ course: { parts } }) => (
 
 const Total = ({ course: { parts } }) => (
   <p>
-    Number of exercises 
-    {parts[0].exercises + parts[1].exercises + parts[2].exercises}
+    Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}
   </p>
 )
 
