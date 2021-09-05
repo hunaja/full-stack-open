@@ -53,6 +53,10 @@ app.get('/api/persons/:id', (req, res, next) => {
 app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body
 
+  if (typeof body.number === 'undefined' || typeof body.name === 'undefined' 
+        || typeof body.id == 'undefined') 
+    return res.sendStatus(400)
+
   Person.findByIdAndUpdate(req.params.id, {
     number: body.number
   })
