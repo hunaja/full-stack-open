@@ -29,8 +29,8 @@ const PersonForm = ({ persons, setPersons, setMessage }) => {
 
       const changedPerson = { ...match, number: newNumber}
       
-      personService.update(changedPerson).then(() => {
-        setPersons(persons.map((p) => (p.id !== match.id ) ? p : changedPerson))
+      personService.update(changedPerson).then((updatedPerson) => {
+        setPersons(persons.map((p) => (p.id !== updatedPerson.id ) ? p : updatedPerson))
 
         setMessage({
           success: true,
@@ -41,7 +41,6 @@ const PersonForm = ({ persons, setPersons, setMessage }) => {
         setNewName('')
         setNewNumber('')
       }).catch((e) => {
-        console.log("Viesti. " + e.message)
         setMessage({
           success: false,
           text: e.response.data.error

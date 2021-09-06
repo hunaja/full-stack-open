@@ -63,8 +63,8 @@ app.put('/api/persons/:id', (req, res, next) => {
 
   Person.findByIdAndUpdate(req.params.id, {
     number: body.number
-  })
-    .then((p) => res.sendStatus(p ? 200 : 404))
+  }, { new: true })
+    .then((p) => p ? p.status(200).json(p.toJSON()) : p.sendStatus(404))
     .catch((e) => next(e))
 })
 
