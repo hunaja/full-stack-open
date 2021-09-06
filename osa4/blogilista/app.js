@@ -10,7 +10,7 @@ const usersRouter = require('./controllers/users.js')
 const loginRouter = require('./controllers/login.js')
 
 const bearer = require('./utils/bearer.js')
-const userExtractor = require('./utils/userExtractor.js')
+const userExtractor = require('./utils/user_extractor.js')
 const handleError = require('./utils/error_handler.js')
 
 mongoose.connect(config.MONGODB_URL)
