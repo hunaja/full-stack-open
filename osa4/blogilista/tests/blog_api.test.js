@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 
 const Blog = require('../models/blog.js')
+const User = require('../models/user.js')
+const testUtil = require('../utils/test_util.js')
+
 const app = require('../app.js')
 const api = supertest(app)
 
@@ -44,8 +47,32 @@ const blogs = [
   }
 ]
 
+const login = async (username, password) => {
+  const response = await api
+      .post('/api/login')
+      .send({ username, password })
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+  return response.body
+}
+
 beforeEach(async () => {
+  await User.deleteMany({})
   await Blog.deleteMany({})
+
+  await testUtil.createUser({
+    username: 'root',
+    name: 'admin',
+    password: 'root'
+  })
+
+  await testUtil.createUser({
+    username: 'test',
+    name: 'test',
+    password: 'test'
+  })
+
   await Blog.insertMany(blogs)
 })
 
@@ -69,7 +96,24 @@ describe('when there is initially some blogs saved', () => {
   })
 
   describe('adding a blog', () => {
+    test('auth needed to add a blog', async () => {
+      const newBlog = {
+        title: 'Test blog',
+        author: 'awwry',
+        url: 'https://google.fi/',
+        likes: 100
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+        .expect('Content-Type', /application\/json/)
+    })
+
     test('a valid blog can be added', async () => {
+      const { token } = await login('root', 'root')
+
       const newBlog = {
         title: 'Test blog',
         author: 'awwry',
@@ -79,6 +123,7 @@ describe('when there is initially some blogs saved', () => {
     
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -88,6 +133,8 @@ describe('when there is initially some blogs saved', () => {
     })
     
     test('likes are set to 0 by default', async () => {
+      const { token } = await login('root', 'root')
+
       const newBlog = {
         title: 'Test blog',
         author: 'awwry',
@@ -96,6 +143,7 @@ describe('when there is initially some blogs saved', () => {
     
       const response = await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -104,6 +152,8 @@ describe('when there is initially some blogs saved', () => {
     })
     
     test('title and url are required fields', async () => {
+      const { token } = await login('root', 'root')
+
       const newBlog = {
         author: 'awwry',
         likes: 10
@@ -111,45 +161,65 @@ describe('when there is initially some blogs saved', () => {
     
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(400)
         .expect('Content-Type', /application\/json/)
     })
   })
 
-  test('a blog can be updated', async () => {
-    const response = await api.get('/api/blogs')
-    const [firstBlog] = response.body
-    const id = firstBlog.id
-  
-    firstBlog.title = 'Testing blog updating'
-  
-    const updatedBlog = await api
-      .put(`/api/blogs/${id}`)
-      .send(firstBlog)
-      .expect(200)
-  
-    expect(updatedBlog.body.title).toBe('Testing blog updating')
+  // TODO: could do more tests - auth needed 2 update, update only possible by
+  // the owner, etc... this will do for now!
+
+  describe('updating a blog', () => {
+    test('a blog can be updated by its owner', async () => {
+      const { token } = await login('root', 'root')
+
+      const response = await api.get('/api/blogs')
+      const [firstBlog] = response.body
+      const id = firstBlog.id
+    
+      firstBlog.title = 'Testing blog updating'
+    
+      const updatedBlog = await api
+        .put(`/api/blogs/${id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(firstBlog)
+        .expect(200)
+    
+      expect(updatedBlog.body.title).toBe('Testing blog updating')
+    })
   })
-  
-  test('a blog can be deleted', async () => {
+
+  test('a blog can be deleted by its owner', async () => {
+    const { token, username } = await login('root', 'root')
+
     let response = await api.get('/api/blogs')
     const [firstBlog] = response.body
     const id = firstBlog.id
-  
+
+    const user = await User.findOne({ username })
+    const userId = user._id
+
+    const firstDbBlog = await Blog.findById(id)
+    firstDbBlog.user = userId
+    const savedBlog = await firstDbBlog.save()
+    
     const initialLength = response.body.length
-  
+    
     await api
       .delete(`/api/blogs/${id}`)
+      .set('Authorization', `Bearer ${token}`)
       .send(firstBlog)
       .expect(204)
-  
+    
     response = await api
       .get('/api/blogs')
       .expect(200)
-  
+    
     expect(response.body).toHaveLength(initialLength - 1)
   })
+  
 })
 
 afterAll(() => mongoose.connection.close())

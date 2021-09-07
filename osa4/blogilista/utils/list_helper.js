@@ -8,7 +8,7 @@ const favoriteBlog = (blogs) =>
   blogs.reduce((a, b) => (a.likes > b.likes) ? a : b, {})
 
 const mostBlogs = (blogs) => {
-  const authors = _.countBy(blogs, 'author');
+  const authors = _.countBy(blogs, 'author')
   const author = _.maxBy(_.keys(authors), (o) => authors[o])
 
   return author ? {

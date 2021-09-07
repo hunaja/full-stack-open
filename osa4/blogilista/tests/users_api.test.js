@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/user.js')
 
+const testUtil = require('../utils/test_util')
+
 const app = require('../app.js')
 const api = supertest(app)
 
@@ -16,22 +18,17 @@ const allUsers = async () => {
   return response.body
 }
 
-describe('when there is initially one user at db', (req, res) => {
-  beforeEach(async () => {
-    await User.deleteMany({})
+beforeEach(async () => {
+  await User.deleteMany({})
 
-    const rounds = 10
-    const passwordHash = await bcrypt.hash('root', rounds)
-    
-    const user = new User({
-      username: 'root',
-      name: 'admin',
-      passwordHash
-    })
-
-    await user.save()
+  await testUtil.createUser({
+    username: 'taken_username',
+    name: 'taken_username',
+    password: 'taken_username'
   })
+})
 
+describe('when there is initially one user at db', (req, res) => {
   describe('creating users', () => {
     test('with valid data succeeds', async () => {
       const usersBefore = await allUsers()
@@ -74,7 +71,7 @@ describe('when there is initially one user at db', (req, res) => {
       const usersBefore = await allUsers()
 
       const newUser = {
-        username: 'root',
+        username: 'taken_username',
         name: 'rootti',
         password: 'admin',
       }

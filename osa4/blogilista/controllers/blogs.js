@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const Blog = require('../models/blog.js')
 const User = require('../models/user.js')
+const userExtractor = require('../utils/user_extractor.js')
 
 const router = Router()
 
@@ -9,7 +10,7 @@ router.get('/', async (req, res) => {
   return res.json(blogs)
 })
 
-router.post('/', async (req, res) => {
+router.post('/', userExtractor, async (req, res) => {
   // Only registered users can add new blogs
   const user = req.user
 
@@ -44,20 +45,23 @@ router.put('/:id', async (req, res) => {
   return res.json(updatedBlog)
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', userExtractor, async (req, res) => {
   const user = req.user
 
   const blog = await Blog.findById(req.params.id)
   if (!blog) return res.sendStatus(404)
 
-  if (blog.user.toString() !== user.id.toString())
+  const postUserId = blog.user ? blog.user : ''
+
+  if (postUserId.toString() !== user.id.toString())
     return res.status(401).json({ error: 'token invalid' })
 
+  const blogId = blog.id
+
   await blog.delete()
-  console.log(blog)
 
   const dbUser = await User.findById(user.id)
-  dbUser.blogs = dbUser.blogs.filter((b) => b._id.toString() !== blog._id.toString())
+  dbUser.blogs = dbUser.blogs.filter((b) => b.id.toString() !== blogId.toString())
   await dbUser.save()
 
   res.sendStatus(204)
