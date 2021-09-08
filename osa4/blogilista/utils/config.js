@@ -1,4 +1,4 @@
-require('dotenv').config({ debug: true })
+require('dotenv').config()
 
 const PORT = process.env.PORT || 8080
 
