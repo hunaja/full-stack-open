@@ -14,7 +14,6 @@ const getAll = () => {
 }
 
 const create = async (blog) => {
-  console.log(token)
   const response = await axios.post(baseUrl, blog, {
     headers: { Authorization: token }
   })
@@ -22,8 +21,27 @@ const create = async (blog) => {
   return response.data
 }
 
+const like = async (blog) => {
+  const response = await axios.put(`${baseUrl}/${blog.id}`, {
+    ...blog,
+    likes: blog.likes + 1
+  }, {
+    headers: { Authorization: token }
+  })
+
+  return response.data
+}
+
+const remove = async (blog) => {
+  await axios.delete(`${baseUrl}/${blog.id}`, blog, {
+    headers: { Authorization: token }
+  })
+}
+
 export default { 
   setToken,
   getAll,
-  create
+  create,
+  like,
+  remove
 }
