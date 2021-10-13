@@ -1,4 +1,5 @@
 const { Router } = require('express')
+
 const Blog = require('../models/blog.js')
 const User = require('../models/user.js')
 const userExtractor = require('../utils/user_extractor.js')
@@ -6,7 +7,7 @@ const userExtractor = require('../utils/user_extractor.js')
 const router = Router()
 
 router.get('/', async (req, res) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user')
   return res.json(blogs)
 })
 
@@ -24,7 +25,7 @@ router.post('/', userExtractor, async (req, res) => {
   dbUser.blogs = dbUser.blogs.concat(dbBlog.id)
   await dbUser.save()
 
-  res.status(201).json(dbBlog)
+  res.status(201).json({ ...dbBlog.toJSON(), user: dbUser })
 })
 
 router.put('/:id', async (req, res) => {
@@ -39,10 +40,11 @@ router.put('/:id', async (req, res) => {
 
   const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
     new: true
-  })
+  }).populate('user')
+  
   if (!updatedBlog) return res.status(404)
 
-  return res.json(updatedBlog)
+  return res.json(updatedBlog.toJSON())
 })
 
 router.delete('/:id', userExtractor, async (req, res) => {

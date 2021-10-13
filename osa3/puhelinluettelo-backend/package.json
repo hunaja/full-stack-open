@@ -7,7 +7,7 @@
     "start": "node index.js",
     "build:ui": "rm -rf build && cd ../../osa2/puhelinluettelo/ && npm run build && cp -r build ../../osa3/puhelinluettelo-backend",
     "deploy": "git push heroku main",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild  && git push && npm run deploy",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild  && git push heroku master && npm run deploy",
     "logs:prod": "heroku logs --tail",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

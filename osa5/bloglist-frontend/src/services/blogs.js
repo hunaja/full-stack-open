@@ -33,15 +33,17 @@ const like = async (blog) => {
 }
 
 const remove = async (blog) => {
-  await axios.delete(`${baseUrl}/${blog.id}`, blog, {
+  await axios.delete(`${baseUrl}/${blog.id}`, {
     headers: { Authorization: token }
-  })
+  })  
 }
 
-export default { 
+const actions = { 
   setToken,
   getAll,
   create,
   like,
   remove
 }
+
+export default actions
