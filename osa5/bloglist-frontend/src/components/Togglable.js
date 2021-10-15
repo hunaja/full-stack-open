@@ -10,13 +10,13 @@ const Togglable = React.forwardRef(({ children, label }, ref) => {
   useImperativeHandle(ref, () => ({ toggleVisibility }))
 
   return (
-    <div>
+    <div id="toggleable-container">
       <div style={hideWhen(visible)}>
-        <button onClick={toggleVisibility}>{label}</button>
+        <button className="expand" onClick={toggleVisibility}>{label}</button>
       </div>
       <div style={hideWhen(!visible)}>
         {children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <button className="hide" onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
   )

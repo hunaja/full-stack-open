@@ -2,7 +2,8 @@
     "env": {
         "jest/globals": true,
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "cypress/globals": true
     },
     "extends": [
         "eslint:recommended",
@@ -17,7 +18,8 @@
     },
     "plugins": [
         "react",
-        "jest"
+        "jest",
+        "cypress"
     ],
     "rules": {
         "indent": [

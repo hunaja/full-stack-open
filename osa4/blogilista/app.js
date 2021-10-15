@@ -21,6 +21,12 @@ app.use(bearer)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+
+if (process.env.NODE_ENV === 'test') {
+  const testsRouter = require('./controllers/tests.js')
+  app.use('/api/tests', testsRouter)
+}
+
 app.use(handleError)
 
 module.exports = app

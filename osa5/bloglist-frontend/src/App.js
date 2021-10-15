@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>{user ? 'blogs' : 'blogs'}</h2>
+      <h2>{user ? 'blogs' : 'login to the application'}</h2>
 
       {notification && <p><i>{notification}</i></p>}
 

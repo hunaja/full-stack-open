@@ -36,7 +36,7 @@ const BlogList = ({ user, displayNotification }) => {
   }
 
   return (
-    <>
+    <div id="blog-list">
       <Togglable label='create new blog' ref={newBlogRef}>
         <BlogForm addBlog={addBlog} />
       </Togglable>
@@ -52,7 +52,7 @@ const BlogList = ({ user, displayNotification }) => {
             setVisible={setVisibleId}
             userId={user.id} />
         )}
-    </>
+    </div>
   )
 }
 

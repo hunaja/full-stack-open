@@ -53,7 +53,7 @@ const LoginForm = ({ displayNotification, setUser }) => {
         </tbody>
       </table>
 
-      <button>login</button>
+      <button id="login-button">login</button>
     </form>
   )
 }
