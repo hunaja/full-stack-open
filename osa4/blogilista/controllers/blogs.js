@@ -63,7 +63,7 @@ router.delete('/:id', userExtractor, async (req, res) => {
   await blog.delete()
 
   const dbUser = await User.findById(user.id)
-  dbUser.blogs = dbUser.blogs.filter((b) => b.id.toString() !== blogId.toString())
+  dbUser.blogs = dbUser.blogs.filter((b) => b.toString() !== blogId.toString())
   await dbUser.save()
 
   res.sendStatus(204)
