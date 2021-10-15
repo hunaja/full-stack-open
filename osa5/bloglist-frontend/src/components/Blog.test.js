@@ -19,12 +19,12 @@ const blog = {
 
 describe('<Blog />', () => {
   let component
-  let setVisible = jest.fn()
+  const handleLike = jest.fn()
 
   beforeEach(() => {
     const userId = '-1'
-    const handleLike = jest.fn()
     const handleRemove = jest.fn()
+    const setVisible = jest.fn()
 
     component = render(
       <Blog handleLike={handleLike} handleRemove={handleRemove}
@@ -42,13 +42,13 @@ describe('<Blog />', () => {
     expect(details).toHaveStyle('display: none')
   })
 
-  test('when a button is clicked twice, its handler is called twice', () => {
+  test('when the like button is clicked twice, its handler is called twice', () => {
     const button = component.container.querySelector('.toggle-button')
 
-    const clicksAtStart = setVisible.mock.calls.length
+    const clicksAtStart = handleLike.mock.calls.length
     fireEvent.click(button)
     fireEvent.click(button)
-    const clicksAtEnd = setVisible.mock.calls.length
+    const clicksAtEnd = handleLike.mock.calls.length
     
     expect(clicksAtEnd - clicksAtStart).toBe(2)
   })
