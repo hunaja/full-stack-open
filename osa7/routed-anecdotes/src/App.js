@@ -53,6 +53,14 @@ const CreateNew = (props) => {
 
   const history = useHistory()
 
+  const handleReset = (e) => {
+    e.preventDefault()
+    
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -89,6 +97,7 @@ const CreateNew = (props) => {
           <input { ...infoParams } />
         </div>
         <button>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
