@@ -11,6 +11,16 @@ router.get('/', async (req, res) => {
   return res.json(blogs)
 })
 
+router.post('/:id/comments', async (req, res) => {
+  const { body } = req
+  
+  const blog = await Blog.findById(req.params.id)
+  blog.comments = [body.content, ...blog.comments]
+  const updatedBlog = await blog.save()
+
+  res.status(201).json(updatedBlog.comments)
+})
+
 router.post('/', userExtractor, async (req, res) => {
   // Only registered users can add new blogs
   const user = req.user
