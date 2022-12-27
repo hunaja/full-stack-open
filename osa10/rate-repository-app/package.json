@@ -1,0 +1,58 @@
+{
+  "name": "rate-repository-app",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.3",
+    "@expo/metro-config": "^0.4.0",
+    "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-native-picker/picker": "^2.4.2",
+    "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
+    "expo": "~46.0.19",
+    "expo-linking": "~3.2.4",
+    "expo-status-bar": "~1.4.0",
+    "formik": "^2.2.9",
+    "graphql": "^15.8.0",
+    "react": "18.0.0",
+    "react-native": "0.69.6",
+    "react-router-native": "^6.6.1",
+    "use-debounce": "^9.0.2",
+    "yup": "^0.32.11",
+    "expo-constants": "~13.2.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/eslint-parser": "^7.19.1",
+    "@testing-library/jest-native": "^5.3.3",
+    "@testing-library/react-native": "^11.5.0",
+    "eslint": "^8.30.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-jest": "^27.1.7",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-native": "^4.0.0",
+    "jest": "^27.5.1",
+    "jest-expo": "^47.0.1",
+    "react-test-renderer": "^18.0.0"
+  },
+  "private": true,
+  "jest": {
+    "preset": "jest-expo",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-router-native)"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
+    ]
+  }
+}
